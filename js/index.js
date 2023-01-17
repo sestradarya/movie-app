@@ -13,45 +13,52 @@ async function getMovieData(name) {
   const moviesData = await response.json();
   const favMovies = getFromLs();
 
-  for (let movie of moviesData.Search) {
-    const movieId = movie.imdbID;
-    moviesId.push(movieId);
-    const res = await fetch(
-      `https://www.omdbapi.com/?apikey=c286dd4c&i=${movieId}`
-    );
-    const fullData = await res.json();
+  try {
+    for (let movie of moviesData.Search) {
+      const movieId = movie.imdbID;
+      moviesId.push(movieId);
+      const res = await fetch(
+        `https://www.omdbapi.com/?apikey=c286dd4c&i=${movieId}`
+      );
+      const fullData = await res.json();
 
-    let isFav = false;
+      let isFav = false;
 
-    for (let movie of favMovies) {
-      if (movie.id === movieId) {
-        isFav = true;
+      for (let movie of favMovies) {
+        if (movie.id === movieId) {
+          isFav = true;
+        }
       }
-    }
 
-    moviesFullData.push({
-      id: movieId,
-      title: fullData.Title,
-      rate: fullData.imdbRating,
-      runtime: fullData.Runtime,
-      genre: fullData.Genre,
-      plot: fullData.Plot,
-      image: fullData.Poster,
-      fav: isFav,
-    });
+      moviesFullData.push({
+        id: movieId,
+        title: fullData.Title,
+        rate: fullData.imdbRating,
+        runtime: fullData.Runtime,
+        genre: fullData.Genre,
+        plot: fullData.Plot,
+        image: fullData.Poster,
+        fav: isFav,
+      });
+    }
+  } catch (error) {
+    cardsEl.innerHTML = `
+        <p class='message'>Nothing found <br> Specify your request, please</p>
+    `;
   }
+
   return moviesFullData.filter((movie) => favMovies.indexOf(movie.id) === -1);
 }
 
-function renderPlaceholder(){
-    document.getElementById('cards').innerHTML = `
+function renderPlaceholder() {
+  document.getElementById("cards").innerHTML = `
         <div class="placeholder">
                 <img src="/images/Icon.png" alt="">
                 <h2>Start exploring</h2>
         </div>
-    `
+    `;
 }
-renderPlaceholder()
+renderPlaceholder();
 
 function getCardHtml(data) {
   const { id, image, title, rate, runtime, genre, plot, fav } = data;
@@ -87,16 +94,20 @@ function getSeparatorHtml() {
 }
 
 searchButton.addEventListener("click", () => {
+  cardsEl.innerHTML = `
+        <p class='message'>Searching for movies...</p>
+    `;
   renderMovies();
 });
 
 async function renderMovies() {
-  cardsEl.innerHTML = "";
+  
   const movieName = searchInput.value;
   let fullData;
   await getMovieData(movieName).then((data) => {
     fullData = data;
   });
+  cardsEl.innerHTML = "";
   for (let el of fullData) {
     cardsEl.innerHTML += getCardHtml(el);
     cardsEl.innerHTML += getSeparatorHtml();
@@ -117,7 +128,6 @@ async function renderMovies() {
   });
 }
 
-
 function setToLs(movie) {
   const list = getFromLs();
   localStorage.setItem("favMovies", JSON.stringify([...list, movie.id]));
@@ -128,12 +138,11 @@ function getFromLs() {
   return movies === null ? [] : movies;
 }
 
-searchInput.addEventListener('click', () => {
-    searchInput.value = ''
-})
+searchInput.addEventListener("click", () => {
+  searchInput.value = "";
+});
 
 // localStorage.removeItem('favMovies')
-
 
 // и баг при слишком большом колличестве запросов. Он перестает выводить фильмы
 // возможно подключить реакт роутер

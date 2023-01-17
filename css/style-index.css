@@ -1,6 +1,7 @@
 @import url(/css/reset.css);
 html{
     font-size: 16px;
+    font-family: 'Inter';
 }
 
 
@@ -27,14 +28,12 @@ header {
 }
 
 header .title {
-    font-family: 'Inter';
     font-weight: 800;
     font-size: 2.7rem;
 }
 
 header .link a {
     color: #ffff;
-    font-family: 'Inter';
     font-weight: 700;
     font-size: 0.875rem;
 }
@@ -64,7 +63,6 @@ header .link a {
 }
 
 #search-button {
-    font-family: 'Inter';
     font-size: 0.875rem;
     background-color: #F9FAFB;
     color: #374151;
@@ -84,7 +82,6 @@ header .link a {
 
 .placeholder h2 {
     color: #DFDDDD;
-    font-family: 'Inter';
     font-size: 1.125rem;
     font-weight: 700;
     padding-top: 1rem;
@@ -121,7 +118,6 @@ header .link a {
 
 .card-captions {
     color: #111827;
-    font-family: 'Inter';
     font-size: 0.75rem;
     display: flex;
     margin-bottom: 0.5rem;
@@ -130,7 +126,6 @@ header .link a {
 .card-text {
     color: #6B7280;
     font-size: 0.875rem;
-    font-family: 'Inter';
     line-height: 142%;
     overflow-y: auto;
 }
@@ -144,14 +139,12 @@ header .link a {
 
 
 .movie-name {
-    font-family: 'Inter';
     font-size: 1.125rem;
     font-weight: 500;
     padding-right: 1.625rem;
 }
 
 .movie-rate {
-    font-family: 'Inter';
     font-size: 0.75rem;
     color: #111827;
 }
@@ -175,6 +168,12 @@ header .link a {
     height: 2px;
     background-color: rgb(220, 220, 220);
     width: 100%;
+}
+
+.error-message{
+    color: #6B7280;
+    line-height: 1.5rem;
+    text-align: center;
 }
 
 @media (max-width: 460px){

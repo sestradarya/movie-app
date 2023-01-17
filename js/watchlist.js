@@ -1,5 +1,4 @@
 const cardsEl = document.getElementById("cards");
-
 let favMovies = [];
 
 async function getMovieData() {
@@ -52,6 +51,7 @@ function getCardHtml(data) {
 }
 
 async function renderMovies() {
+  cardsEl.innerHTML = "";
   const fullData = await getMovieData();
   for (let el of fullData) {
     cardsEl.innerHTML += getCardHtml(el);
@@ -65,6 +65,7 @@ async function renderMovies() {
       removeFromLs(targetMovie[0].id);
 
       favMovies = favMovies.filter((movie) => movie.id !== targetId);
+
       renderMovies();
     });
   });
