@@ -1,34 +1,31 @@
-const cardsEl = document.getElementById('cards')
+const cardsEl = document.getElementById("cards");
 
-
-const favMoviesId = []
+let favMovies = [];
 
 async function getMovieData() {
-    
+  favMovies = [];
+  for (let id of getFromLs().reverse()) {
+    const res = await fetch(`https://www.omdbapi.com/?apikey=c286dd4c&i=${id}`);
+    const movieData = await res.json();
 
-    for (let id of getFromLs().reverse()) {
-        const res = await fetch(`https://www.omdbapi.com/?apikey=c286dd4c&i=${id}`)
-        const movieData = await res.json()
+    favMovies.push({
+      id: id,
+      title: movieData.Title,
+      rate: movieData.imdbRating,
+      runtime: movieData.Runtime,
+      genre: movieData.Genre,
+      plot: movieData.Plot,
+      image: movieData.Poster,
+      fav: true,
+    });
+  }
 
-        favMoviesId.push({
-            id: id,
-            title: movieData.Title,
-            rate: movieData.imdbRating,
-            runtime: movieData.Runtime,
-            genre: movieData.Genre,
-            plot: movieData.Plot,
-            image: movieData.Poster,
-            fav: true
-        })
-    }
-
-    return favMoviesId
+  return favMovies;
 }
 
-
 function getCardHtml(data) {
-    const { id, image, title, rate, runtime, genre, plot, fav } = data
-    return `
+  const { id, image, title, rate, runtime, genre, plot, fav } = data;
+  return `
     <div class="card">
     <img src=${image} class="movie-image" alt="">
     <div class="card-description">
@@ -41,7 +38,7 @@ function getCardHtml(data) {
             <p class="movie-genre">${genre}</p>
             <div class="movie-remove">
                 <div class="remove-button" data-remove=${id}>
-                    <img src="/images/Icon3.png" class="remove-button-image" alt="">
+                    <i class="fa-solid fa-minus"></i>
                 </div>
                 <p>Remove</p>
             </div>
@@ -51,41 +48,40 @@ function getCardHtml(data) {
         </div>
     </div>
 </div>
-    `
+    `;
 }
 
-async function addCards(){
-    const fullData = await getMovieData()
-    for(let el of fullData){
-        cardsEl.innerHTML += getCardHtml(el)  
-        cardsEl.innerHTML += getSeparatorHtml()
-    }
+async function renderMovies() {
+  const fullData = await getMovieData();
+  for (let el of fullData) {
+    cardsEl.innerHTML += getCardHtml(el);
+    cardsEl.innerHTML += getSeparatorHtml();
+  }
+  document.querySelectorAll(".fa-minus").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      targetId = btn.parentElement.dataset.remove;
+      const targetMovie = fullData.filter((movie) => movie.id === targetId);
+      console.log(targetMovie);
+      removeFromLs(targetMovie[0].id);
+
+      favMovies = favMovies.filter((movie) => movie.id !== targetId);
+      renderMovies();
+    });
+  });
 }
-
-document.addEventListener('click', (event) => {
-    if(event.target.className === 'remove-button-image'){
-        const targetId = event.target.parentElement.dataset.remove
-        removeFromLs(targetId)
-        addCards()
-    }
-})
-
 
 function getSeparatorHtml() {
-    return `<div class="separator"></div>`
+  return `<div class="separator"></div>`;
 }
 
 function getFromLs() {
-    const movies = JSON.parse(localStorage.getItem('favMovies'))
-    return movies === null ? [] : movies
+  const movies = JSON.parse(localStorage.getItem("favMovies"));
+  return movies === null ? [] : movies;
 }
 
-function removeFromLs(id){
-    const newArr = getFromLs().filter(el => el!== id)
-    localStorage.setItem('favMovies', JSON.stringify(newArr))
+function removeFromLs(id) {
+  const newArr = getFromLs().filter((el) => el !== id);
+  localStorage.setItem("favMovies", JSON.stringify(newArr));
 }
 
-console.log(getFromLs())
-
-
-addCards()
+renderMovies();

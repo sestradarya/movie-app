@@ -43,16 +43,15 @@ async function getMovieData(name) {
   return moviesFullData.filter((movie) => favMovies.indexOf(movie.id) === -1);
 }
 
-// function renderPlaceholder(){
-//     document.getElementById('cards').innerHTML = `
-//         <div class="placeholder">
-//                 <img src="/images/Icon.png" alt="">
-//                 <h2>Start exploring</h2>
-//         </div>
-//     `
-// }
-
-// renderPlaceholder()
+function renderPlaceholder(){
+    document.getElementById('cards').innerHTML = `
+        <div class="placeholder">
+                <img src="/images/Icon.png" alt="">
+                <h2>Start exploring</h2>
+        </div>
+    `
+}
+renderPlaceholder()
 
 function getCardHtml(data) {
   const { id, image, title, rate, runtime, genre, plot, fav } = data;
@@ -70,13 +69,8 @@ function getCardHtml(data) {
                 <div class="movie-add">
                     <div class="add-button" data-add=${id}>
                         <i class="fa-solid fa-plus" ></i>
-                        ${
-                          fav
-                            ? '<i class="fa-solid fa-plus"></i>'
-                            : ' <i class="<i class="fa-solid fa-minus"></i>'
-                        }
                     </div>
-                    <p>Watchlist</p>
+                    <p>Add</p>
                 </div>
             </div>
             <div class="card-text">
@@ -123,18 +117,6 @@ async function renderMovies() {
   });
 }
 
-// document.addEventListener("click", (event) => {
-//   if (event.target.className === "add-button-image") {
-//     const targetId = event.target.parentElement.dataset.add;
-//     const targetMovie = moviesFullData.filter((movie) => movie.id === targetId);
-//     if (getFromLs().indexOf(targetId) > -1) {
-//       setToLs(targetMovie[0]);
-//       targetMovie[0].fav = true;
-//     }
-//   }
-// });
-
-// localStorage.setItem('favMovies', JSON.stringify([]))
 
 function setToLs(movie) {
   const list = getFromLs();
@@ -146,10 +128,13 @@ function getFromLs() {
   return movies === null ? [] : movies;
 }
 
+searchInput.addEventListener('click', () => {
+    searchInput.value = ''
+})
+
 // localStorage.removeItem('favMovies')
 
-// Все фильмы которые появляются записывать в сешн сторедж, потом их рендерить, дальше при нажатии кнопки удалять их из сешн сторедж и снова рендерить
-// фильмы из сторедж
+
 // и баг при слишком большом колличестве запросов. Он перестает выводить фильмы
 // возможно подключить реакт роутер
 

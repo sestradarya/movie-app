@@ -156,16 +156,16 @@ header .link a {
     color: #111827;
 }
 
-.movie-add{
+.movie-add, .movie-remove{
     display: flex;
     align-items: center;
 }
 
-.movie-add p{
+.movie-add p, .movie-remove p{
     padding-left: 0.375rem;
 }
 
-.add-button{
+.add-button, .remove-button{
     padding-right: 2px;
     align-self: center;
     line-height: 0;
