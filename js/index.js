@@ -114,6 +114,9 @@ async function renderMovies() {
   }
   document.querySelectorAll(".fa-plus").forEach((btn) => {
     btn.addEventListener("click", () => {
+      cardsEl.innerHTML = `
+      <p class='message'>Adding a movie to your watchlist...</p>
+      `
       targetId = btn.parentElement.dataset.add;
       const targetMovie = moviesFullData.filter(
         (movie) => movie.id === targetId

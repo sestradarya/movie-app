@@ -3,7 +3,7 @@ let favMovies = [];
 
 async function getMovieData() {
   favMovies = [];
-  for (let id of getFromLs().reverse()) {
+  for (let id of [...new Set(getFromLs())].reverse()) {
     const res = await fetch(`https://www.omdbapi.com/?apikey=c286dd4c&i=${id}`);
     const movieData = await res.json();
 
@@ -51,14 +51,22 @@ function getCardHtml(data) {
 }
 
 async function renderMovies() {
-  cardsEl.innerHTML = "";
+  if (getFromLs().length === 0) {
+    cardsEl.innerHTML = `
+        <p class='message'>Your watchlist is empty</p>
+    `;
+  }
   const fullData = await getMovieData();
+  cardsEl.innerHTML = "";
   for (let el of fullData) {
     cardsEl.innerHTML += getCardHtml(el);
     cardsEl.innerHTML += getSeparatorHtml();
   }
   document.querySelectorAll(".fa-minus").forEach((btn) => {
     btn.addEventListener("click", () => {
+      cardsEl.innerHTML = `
+        <p class='message'>Removing a movie to your watchlist...</p>
+      `;
       targetId = btn.parentElement.dataset.remove;
       const targetMovie = fullData.filter((movie) => movie.id === targetId);
       console.log(targetMovie);
