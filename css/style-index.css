@@ -11,6 +11,12 @@ header {
     margin-bottom: -22px;
 }
 
+.wrapper{
+    height: 100vh;
+    display: flex;
+    align-items: center;justify-content: center;
+}
+
 
 .container {
     width: 750px;
@@ -25,18 +31,18 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 208px;
-    padding: 0 2.625rem;
+    padding: 0 2rem;
 }
 
 header .title {
     font-weight: 800;
-    font-size: 2.7rem;
+    font-size: 2.2rem;
 }
 
 header .link a {
     color: #ffff;
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: 1.3rem;
 }
 
 
@@ -74,10 +80,11 @@ header .link a {
     border-bottom-right-radius: 5px;
 }
 
+
 .placeholder {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 40%;
     text-align: center;
 }
 
@@ -178,11 +185,15 @@ header .link a {
     padding-top: 2rem;
 }
 
+
 @media (max-width: 460px){
     html{
-        font-size: 25px;
+        font-size: 15px;
     }
     .card-description{
         height: 250px;
+    }
+    .placeholder {
+        left: 35%;
     }
 }
